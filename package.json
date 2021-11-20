@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev":"nodemon index"
   },
   "author": "sooraj s",
   "license": "ISC",
@@ -12,6 +12,6 @@
     "express": "^4.17.1",
     "mongoose": "^6.0.12",
     "nodemon": "^2.0.15",
-    "socket.io": "^4.3.2"
+    "socket.io": "^2.3.0"
   }
 }
