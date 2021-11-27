@@ -6,13 +6,15 @@ var server = http.createServer(app);
 var io = require("socket.io")(server);
 
 const sendMessage=require('./modules/sendmessage').sendMessage;
-
+const getMessageList=require('./modules/getMessageList').getMessageList;
 
 
 
 //middlewre
 app.use(express.json());
-sendMessage("text",1,"test response",2);
+// sendMessage("text",2,"3 rec",3);
+getMessageList(1,2);
+
 io.on("connection", (socket) => {
 
   console.log("connetetd");
