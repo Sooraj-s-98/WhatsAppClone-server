@@ -1,0 +1,10 @@
+{
+    "db": {
+        "host":"localhost",
+        "user": "root",
+        "password": "",
+        "database": "whatsapp"
+    },
+    "limit": 15,
+    "port": 3030
+}
