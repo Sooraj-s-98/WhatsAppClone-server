@@ -1,30 +1,43 @@
-const express = require("express");
-var http = require("http");
+
+const express = require('express');
+const cors = require('cors');
+const socketIO = require('socket.io');
+const shared = require('./shared');
+
 const app = express();
-const port = process.env.PORT || 4000;
-var server = http.createServer(app);
-var io = require("socket.io")(server);
 
-const sendMessage=require('./modules/sendmessage').sendMessage;
-const getMessageList=require('./modules/getMessageList').getMessageList;
-
-
-
-//middlewre
 app.use(express.json());
-// sendMessage("text",2,"3 rec",3);
-getMessageList(1,2);
+app.use(cors());
 
-io.on("connection", (socket) => {
+const server = require('http').createServer(app);
+const io = socketIO(server);
+shared.io = io;
 
-  console.log("connetetd");
-  console.log(socket.id, "has joined");
-  socket.on("/test",data=>{
-    console.log(data)
-  })
+let users = [];
+shared.users = users;
+
+io.on('connection', socket => {
+    socket.on("user-in", (user) => {
+        const newUser = { ...user, socket };
+         users.push(newUser);
+        console.log("user = ", users);
+        // socket.emit("user-in");
+         shared.users = users;
+    });
+    
+    socket.on("user-left", () => {
+        users = users.filter(x => x.socket.id !== socket.id);
+        shared.users = users;
+    });
+
+    socket.on("disconnect", () => {
+        users = users.filter(x => x.socket.id !== socket.id);
+        shared.users = users;
+    });
+
 });
 
-server.listen(port, "0.0.0.0", () => {
-  console.log(`server started ${port} `);
-  
+
+server.listen('8081', () => {
+    console.log("Listening on port 8081");
 });
